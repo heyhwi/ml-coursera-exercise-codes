@@ -15,7 +15,20 @@ p = zeros(m, 1);
 %               You should set p to a vector of 0's and 1's
 %
 
+% ver 1
+% for i = 1:m
+%     if(sigmoid(X(i,:)*theta) >= 0.5)
+%         p(i) = 1;
+%     else
+%         p(i) = 0;
+%     end
+% end
 
+% ver 2
+% k = find(sigmoid( X * theta) >= 0.5 );
+% p(k)= 1;
+
+p(sigmoid( X * theta) >= 0.5) = 1;  
 
 
 

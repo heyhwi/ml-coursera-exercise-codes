@@ -50,6 +50,17 @@ X = [ones(m, 1) X];
 %
 
 
+initial_theta = zeros(n+1,1);
+options = optimset('GradObj','on','MaxIter',50);
+for i = 1:num_labels
+    theta = ...
+        fmincg(@(t)(lrCostFunction(t,X,(y == i), lambda)), ...
+        initial_theta, options);
+    all_theta(i,:) = theta(:)';
+    % matlab would match the matrix dimension automatically, therefore we
+    % can write codes like this
+    % all_theta(c,:) = fmincg (@(t)(lrCostFunction(t, X, (y == c), lambda)), initial_theta, options);
+end
 
 
 

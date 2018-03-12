@@ -62,25 +62,60 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
+%% Part 1
+%% adapt y to the standard form
+Y = zeros(size(y,1),num_labels);  % loop should work in any num_labels
+for i = 1:size(y,1)
+    Y(i,y(i)) = 1;
+end
+
+%% cost function without regularization
+X = [ones(m,1) X];
+a2 = sigmoid(X * Theta1');
+a2 = [ones(m,1) a2];
+a3 = sigmoid(a2 * Theta2');
+J = sum(sum((-Y .* log(a3) - (1-Y) .* log(1-a3)))) / m;
+
+%% regularized cost function (Using the J value above)
+tTheta1 = Theta1(:,2:end);
+tTheta2 = Theta2(:,2:end);
+
+J = J + (sum(sum(tTheta1 .^ 2))+sum(sum(tTheta2 .^ 2))) * lambda / (2 * m);
+
+%% Part 2
+%% cal gradient (5 steps)
+delta_1 = zeros(size(Theta1));
+delta_2 = zeros(size(Theta2));
+for t = 1:m
+    % Step 1
+    a1 = X(t,:)';
+    % a1 = [1 ; a1];   % not needed
+    z2 = Theta1 * a1;
+    a2 = sigmoid(z2);
+    a2 = [1 ; a2];
+    z3 = Theta2 * a2;
+    a3 = sigmoid(z3);
+    
+    % Step 2
+    d3 = a3 - Y(t,:)';
+
+    % Step 3
+    d2 = Theta2' * d3;
+    d2 = d2(2:end) .* sigmoidGradient(z2);
+
+    % Step 4
+    delta_2 = delta_2 + d3 *  a2';
+    delta_1 = delta_1 + d2 * a1';
+end
+%% THIS STEP SHOULD BE CHECKED LATER
+    % Step 5
+    Theta1_temp = [zeros(size(Theta1,1),1) Theta1(:,2:end)];
+    Theta2_temp = [zeros(size(Theta2,1),1) Theta2(:,2:end)];
+    Theta1_grad = 1 / m * delta_1 + lambda/m * Theta1_temp;
+    Theta2_grad = 1 / m * delta_2 + lambda/m * Theta2_temp ;
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-% -------------------------------------------------------------
+%% -------------------------------------------------------------
 
 % =========================================================================
 

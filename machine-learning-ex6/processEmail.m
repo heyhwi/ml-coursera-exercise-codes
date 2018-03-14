@@ -15,7 +15,7 @@ word_indices = [];
 % ========================== Preprocess Email ===========================
 
 % Find the Headers ( \n\n and remove )
-% Uncomment the following lines if you are working with raw emails with the
+% Uncomment the following lines if you are working wit h raw emails with the
 % full headers
 
 % hdrstart = strfind(email_contents, ([char(10) char(10)]));
@@ -96,8 +96,12 @@ while ~isempty(email_contents)
     % Note: You can use strcmp(str1, str2) to compare two strings (str1 and
     %       str2). It will return 1 only if the two strings are equivalent.
     %
-
-
+    for i = 1:1899
+        if(strcmp(str,vocabList(i)))
+            word_indices = [word_indices; i];
+            continue;
+        end
+    end
 
 
 
